@@ -211,7 +211,7 @@ class Advertise
 
     public function setUser(?User $user): static
     {
-        $this->user = $user;
+        $this->owner = $user;
 
         return $this;
     }

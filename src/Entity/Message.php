@@ -82,7 +82,7 @@ class Message
 
     public function setTarget(?user $reciver): static
     {
-        $this->target = $reciver;
+        $this->reciver = $reciver;
 
         return $this;
     }
