@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
 class Adresse
@@ -17,18 +18,23 @@ class Adresse
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'advertise:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'advertise:read'])]
     private ?string $streetName = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    #[Groups(['user:read', 'advertise:read'])]
     private ?int $adresseNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'advertise:read'])]
     private ?string $country = null;
 
     #[ORM\Column]
+    #[Groups(['user:read', 'advertise:read'])]
     private ?int $postalCode = null;
 
     /**

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AdvertiseImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AdvertiseImageRepository::class)]
 class AdvertiseImage
@@ -15,9 +16,11 @@ class AdvertiseImage
 
     #[ORM\ManyToOne(inversedBy: 'advertiseImages')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['advertise:read'])]
     private ?Advertise $Avertise = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['advertise:read'])]
     private ?string $imageSlug = null;
 
     public function getId(): ?int

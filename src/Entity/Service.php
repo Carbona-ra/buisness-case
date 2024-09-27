@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service
@@ -14,10 +15,12 @@ class Service
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['advertise:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['advertise:read'])]
     private ?Advertise $Advertise = null;
 
     public function getId(): ?int

@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[ApiResource(normalizationContext: ['groups' => 'message:item'], paginationEnabled: false)]
 class Message
 {
     #[ORM\Id]
@@ -15,15 +19,19 @@ class Message
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['message:read'])]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Groups(['message:read'])]
     private ?\DateTime $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[Groups(['message:read'])]
     private ?user $sender = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[Groups(['message:read'])]
     private ?user $reciver = null;
 
     public function getId(): ?int

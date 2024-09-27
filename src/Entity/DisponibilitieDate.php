@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DisponibilitieDateRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: DisponibilitieDateRepository::class)]
 class DisponibilitieDate
@@ -14,12 +15,15 @@ class DisponibilitieDate
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['advertise:read'])]
     private ?\DateTime $startedAt = null;
 
     #[ORM\Column]
+    #[Groups(['advertise:read'])]
     private ?\DateTime $endedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'disponibilitieDates')]
+    #[Groups(['advertise:read'])]
     private ?Advertise $Advertise = null;
 
     public function getId(): ?int

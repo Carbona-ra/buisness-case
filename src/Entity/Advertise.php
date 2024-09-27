@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AdvertiseRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['advertise:read']])]
+#[ApiResource(normalizationContext: ['groups' => ['advertise:read']], paginationEnabled: false)]
 class Advertise
 {
     #[ORM\Id]
@@ -38,9 +38,11 @@ class Advertise
     private ?Adresse $adresse = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['advertise:read'])]
     private ?string $presentationPicture = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['advertise:read'])]
     private ?string $gallery = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -53,35 +55,41 @@ class Advertise
 
     #[ORM\ManyToOne(inversedBy: 'Advertise')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['advertise:read'])]
     private ?User $owner = null;
 
     /**
      * @var Collection<int, Reaction>
      */
+    #[Groups(['advertise:read'])]
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'Advertise')]
     private Collection $reactions;
 
     /**
      * @var Collection<int, AdvertiseImage>
      */
+    #[Groups(['advertise:read'])]
     #[ORM\OneToMany(targetEntity: AdvertiseImage::class, mappedBy: 'Avertise')]
     private Collection $advertiseImages;
 
     /**
      * @var Collection<int, DisponibilitieDate>
      */
+    #[Groups(['advertise:read'])]
     #[ORM\OneToMany(targetEntity: DisponibilitieDate::class, mappedBy: 'Advertise')]
     private Collection $disponibilitieDates;
 
     /**
      * @var Collection<int, Reservation>
      */
+    #[Groups(['advertise:read'])]
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Advertise')]
     private Collection $reservations;
 
     /**
      * @var Collection<int, Service>
      */
+    #[Groups(['advertise:read'])]
     #[ORM\OneToMany(targetEntity: Service::class, mappedBy: 'Advertise')]
     private Collection $services;
 
