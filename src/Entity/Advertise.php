@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AdvertiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,15 +11,22 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: AdvertiseRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'price' => 'exact',
+    'place' => 'exact',
+    'totalPlaceNumber' => 'exact',
+])]
 #[ApiResource(normalizationContext: ['groups' => ['advertise:read']], paginationEnabled: false)]
 class Advertise
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['advertise:read'])]
+    #[Groups(['advertise:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

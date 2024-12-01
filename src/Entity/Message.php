@@ -2,20 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => 'message:item'], paginationEnabled: false)]
+#[ApiResource(normalizationContext: ['groups' => 'message:read'], paginationEnabled: false)]
+#[ApiFilter(SearchFilter::class, properties: ['sender.id' => 'exact', 'reciver.id' => 'exact'])]
 class Message
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['message:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -28,11 +31,11 @@ class Message
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     #[Groups(['message:read'])]
-    private ?user $sender = null;
+    private ?User $sender = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     #[Groups(['message:read'])]
-    private ?user $reciver = null;
+    private ?User $reciver = null;
 
     public function getId(): ?int
     {
@@ -75,12 +78,12 @@ class Message
         return $this;
     }
 
-    public function getTarget(): ?user
+    public function getReciver(): ?user
     {
         return $this->reciver;
     }
 
-    public function setTarget(?user $reciver): static
+    public function setReciver(?user $reciver): static
     {
         $this->reciver = $reciver;
 

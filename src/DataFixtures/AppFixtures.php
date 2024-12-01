@@ -43,11 +43,27 @@ class AppFixtures extends Fixture
         // Créer un administrateur
         $admin = new User();
         $admin->setEmail('admin@example.com');
-        $admin->setFirsname('Admin');
-        $admin->setLastname('User');
+        $admin->setFirstname('benjamin');
+        $admin->setLastname('Schacher');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($faker->password());
+        $admin->setPassword('1234admin');
         $manager->persist($admin);
+
+        $tom = new User();
+        $tom->setEmail('tom@example.com');
+        $tom->setFirstname('tom');
+        $tom->setLastname('Schacher');
+        $tom->setRoles(['ROLE_USER']);
+        $tom->setPassword('1234admin');
+        $manager->persist($tom);
+
+        $ben = new User();
+        $ben->setEmail('ben@example.com');
+        $ben->setFirstname('ben');
+        $ben->setLastname('Schacher');
+        $ben->setRoles(['ROLE_LANDLORD','ROLE_USER']);
+        $ben->setPassword('1234admin');
+        $manager->persist($ben);
 
         $users = [];
         $adresses = [];
@@ -58,7 +74,7 @@ class AppFixtures extends Fixture
             // Créer un utilisateur
             $user = new User();
             $user->setEmail($faker->email);
-            $user->setFirsname(self::USER_NAMES[$i]);
+            $user->setFirstname(self::USER_NAMES[$i]);
             $user->setLastname($faker->lastName);
             $user->setRoles(['ROLE_USER']);
             $user->setPassword($faker->password());
@@ -201,7 +217,7 @@ class AppFixtures extends Fixture
 
                 // Associer l'expéditeur et le destinataire
                 $message->setSender($users[$senderIndex]);
-                $message->setTarget($users[$receiverIndex]);
+                $message->setReciver($users[$receiverIndex]);
 
                 // Persister le message
                 $manager->persist($message);

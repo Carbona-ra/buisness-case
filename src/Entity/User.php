@@ -19,7 +19,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'message:read', 'advertise:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -40,42 +40,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
-    private ?string $firsname = null;
+    #[Groups(['user:read', 'advertise:read'])]
+    private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'advertise:read'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[Groups(['user:read'])]
+    // #[Groups(['user:read'])]
     private ?Adresse $adresse = null;
 
     /**
      * @var Collection<int, Advertise>
      */
-    #[Groups(['user:read'])]
+    // #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Advertise::class, mappedBy: 'user')]
     private Collection $Advertise;
 
     /**
      * @var Collection<int, Message>
      */
-    #[Groups(['user:read'])]
+    // #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'sender')]
     private Collection $messages;
 
     /**
      * @var Collection<int, Reaction>
      */
-    #[Groups(['user:read'])]
+    // #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
     private Collection $reactions;
 
     /**
      * @var Collection<int, Reservation>
      */
-    #[Groups(['user:read'])]
+    // #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
     private Collection $reservations;
 
@@ -162,14 +162,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirsname(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->firsname;
+        return $this->firstname;
     }
 
-    public function setFirsname(string $firsname): static
+    public function setFirstname(string $firstname): static
     {
-        $this->firsname = $firsname;
+        $this->firstname = $firstname;
 
         return $this;
     }
