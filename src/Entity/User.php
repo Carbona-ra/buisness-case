@@ -48,14 +48,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    // #[Groups(['user:read'])]
+    #[Groups(['user:read'])]
     private ?Adresse $adresse = null;
 
     /**
      * @var Collection<int, Advertise>
      */
-    // #[Groups(['user:read'])]
-    #[ORM\OneToMany(targetEntity: Advertise::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
+    #[ORM\OneToMany(targetEntity: Advertise::class, mappedBy: 'owner')]
     private Collection $Advertise;
 
     /**
@@ -68,14 +68,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Reaction>
      */
-    // #[Groups(['user:read'])]
+    #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Reaction::class, mappedBy: 'user')]
     private Collection $reactions;
 
     /**
      * @var Collection<int, Reservation>
      */
-    // #[Groups(['user:read'])]
+    #[Groups(['user:read'])]
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
     private Collection $reservations;
 
@@ -210,7 +210,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->Advertise->contains($advertise)) {
             $this->Advertise->add($advertise);
-            $advertise->setUser($this);
+            $advertise->setOwner($this);
         }
 
         return $this;
@@ -220,8 +220,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->Advertise->removeElement($advertise)) {
             // set the owning side to null (unless already changed)
-            if ($advertise->getUser() === $this) {
-                $advertise->setUser(null);
+            if ($advertise->getOwner() === $this) {
+                $advertise->setOwner(null);
             }
         }
 

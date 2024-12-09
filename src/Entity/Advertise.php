@@ -30,7 +30,7 @@ class Advertise
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['advertise:read'])]
+    #[Groups(['advertise:read', 'user:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -104,7 +104,7 @@ class Advertise
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->owner = new ArrayCollection();
         $this->reactions = new ArrayCollection();
         $this->advertiseImages = new ArrayCollection();
         $this->disponibilitieDates = new ArrayCollection();
@@ -213,12 +213,12 @@ class Advertise
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getOwner(): ?User
     {
         return $this->owner;
     }
 
-    public function setUser(?User $user): static
+    public function setOwner(?User $user): static
     {
         $this->owner = $user;
 
