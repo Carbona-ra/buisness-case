@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'advertise:read'])]
     private ?string $lastname = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, cascade: ["persist"], inversedBy: 'users')]
     #[Groups(['user:read'])]
     private ?Adresse $adresse = null;
 
