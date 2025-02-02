@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.2-fpm
+    container_name: symfony_php
+    working_dir: /var/www/symfony
+    volumes:
+      - .:/var/www/symfony
+      - ./php.ini:/usr/local/etc/php/php.ini # Chargement d'une configuration personnalisée
+    environment:
+      APP_ENV: dev
+      APP_SECRET: VotreSecret
+      DATABASE_URL: mysql://symfony:symfony@mysql:3306/symfony
+    depends_on:
+      - mysql # S'assure que MySQL est démarré avant PHP
+    networks:
+      - symfony_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: symfony_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql # Persistance des données
+    networks:
+      - symfony_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: symfony_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # Configuration Nginx
+      - .:/var/www/symfony
+    ports:
+      - "80:80" # Serveur accessible via le port 80
+    depends_on:
+      - php
+    networks:
+      - symfony_network
+      
+  websocket:
+    image: php:8.2-cli
+    container_name: symfony_websocket
+    working_dir: /var/www/symfony
+    volumes:
+      - .:/var/www/symfony
+    command: php /var/www/symfony/bin/console app:websocket:run
+    ports:
+      - "8080:8080" # Port pour les connexions WebSocket
+    depends_on:
+      - php
+    networks:
+      - symfony_network
+
+volumes:
+  mysql_data: # Volume pour persister les données MySQL
+
+networks:
+  symfony_network:
+    driver: bridge
